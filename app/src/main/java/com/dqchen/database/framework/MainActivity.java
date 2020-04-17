@@ -9,44 +9,70 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dqchen.database.framework.bean.User;
 import com.dqchen.database.framework.sqlite.BaseDao;
 import com.dqchen.database.framework.sqlite.BaseDaoFactory;
+import com.dqchen.database.framework.sqlite.BaseDaoImpA;
+import com.dqchen.database.framework.sqlite.IBaseDao;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private BaseDao<User> baseDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-        BaseDaoFactory baseDaoFactory = BaseDaoFactory.getInstance(this);
-        baseDao = baseDaoFactory.getBaseDao(User.class);
+//        BaseDaoFactory baseDaoFactory = BaseDaoFactory.getInstance(this);
+//        baseDao = baseDaoFactory.getBaseDao(User.class);
 
     }
 
     public void clickInsert(View view) {
-        User user = new User();
-        user.setId(123);
-        user.setName("dqchen");
-        user.setPassword("123123");
-        user.setStatus(1);
-        baseDao.insert(user);
+//        User user = new User();
+//        user.setId(123);
+//        user.setName("dqchen");
+//        user.setPassword("123123");
+//        user.setStatus(1);
+//        baseDao.insert(user);
+//        Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
+
+        IBaseDao<User> userDao = BaseDaoFactory.getInstance().getBaseDao(BaseDaoImpA.class,User.class);
+        userDao.insert(new User(1,"adasdads","dasd",1));
         Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
     }
 
     public void clickUpdate(View view) {
+        BaseDao<User> userDao = BaseDaoFactory.getInstance().getBaseDao(User.class);
+        User where = new User();
+        where.setId(1);
+        User entity = new User();
+        entity.setName("dqchen");
+        userDao.update(entity,where);
+        Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
     }
 
     public void clickDelete(View view) {
+        BaseDao<User> userDao = BaseDaoFactory.getInstance().getBaseDao(User.class);
+        User entity = new User();
+        entity.setName("dqchen");
+        userDao.delete(entity);
+        Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
     }
 
     public void clickSelect(View view) {
+        BaseDao<User> userDao = BaseDaoFactory.getInstance().getBaseDao(User.class);
+        User entity = new User();
+        List<User> userList = userDao.query(entity);
+        for (User user : userList) {
+            Log.i("dqchen-->","query-->"+user.toString());
+        }
+        Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
     }
 
     public void clickLogin(View view) {
