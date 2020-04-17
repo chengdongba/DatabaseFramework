@@ -34,7 +34,7 @@ public class BaseDao<T> implements IBaseDao<T> {
      * @param entity         数据库操作的数据类型
      * @return 返回是否初始化成功
      */
-    protected boolean init(SQLiteDatabase sqLiteDatabase, Class<T> entity) {
+    public boolean init(SQLiteDatabase sqLiteDatabase, Class<T> entity) {
         this.sqLiteDatabase = sqLiteDatabase;
         this.entity = entity;
         if (!isInit) {

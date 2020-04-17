@@ -1,6 +1,7 @@
 package com.dqchen.database.framework;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -13,15 +14,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dqchen.database.framework.bean.Photo;
 import com.dqchen.database.framework.bean.User;
 import com.dqchen.database.framework.sqlite.BaseDao;
 import com.dqchen.database.framework.sqlite.BaseDaoFactory;
 import com.dqchen.database.framework.sqlite.BaseDaoImpA;
 import com.dqchen.database.framework.sqlite.IBaseDao;
+import com.dqchen.database.framework.sub_sqlite.BaseDaoSubFactory;
+import com.dqchen.database.framework.sub_sqlite.PhotoDao;
+import com.dqchen.database.framework.sub_sqlite.UserDao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +85,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickLogin(View view) {
+        UserDao userDao = BaseDaoFactory.getInstance().getBaseDao(UserDao.class,User.class);
+        User entity = new User();
+        entity.setName("张三"+ i++);
+        entity.setId(i);
+        entity.setPassword("123456");
+        userDao.insert(entity);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void clickSubInsert(View view) {
+        Photo photo = new Photo();
+        photo.setPath("data/data/my.jpg");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String date = simpleDateFormat.format(new Date());
+        photo.setDate(date);
+        PhotoDao photoDao = BaseDaoSubFactory.getInstance().getBaseDao(PhotoDao.class,Photo.class);
+        photoDao.insert(photo);
+        Toast.makeText(this,"执行成功",Toast.LENGTH_SHORT).show();
     }
 
     public void write(View view) {

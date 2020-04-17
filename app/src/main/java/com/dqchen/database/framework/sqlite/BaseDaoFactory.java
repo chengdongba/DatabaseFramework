@@ -41,15 +41,15 @@ public class BaseDaoFactory {
 //        return ourInstance;
 //    }
 
-    private BaseDaoFactory() {
+    protected BaseDaoFactory() {
         //建议写入SD卡
 //        File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),"update");
         File file = new File(Environment.getExternalStorageDirectory(),"update");
         if (!file.exists()){
             file.mkdirs();
         }
-//        sqliteDateBasePath = file.getAbsolutePath()+"/user.db";
-        sqliteDateBasePath = "data/data/com.dqchen.database.framework/user.db";
+        sqliteDateBasePath = file.getAbsolutePath()+"/user.db";
+//        sqliteDateBasePath = "data/data/com.dqchen.database.framework/user.db";
         Log.d("dqchen-->","path: "+sqliteDateBasePath);
         sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(sqliteDateBasePath,null);
     }
